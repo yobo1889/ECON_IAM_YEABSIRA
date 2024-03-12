@@ -105,6 +105,8 @@
     const SPREADSHEET_ID = '1d8zUH-JMpL3NZ4QUswsM9fNKd8h8Pzt7-QNbv3WtUpc';
     const RANGES = ['Output!B2:B282', 'Output!C2:C282', 'Output!D2:D282'];
     const CLIENT_ID = '226866111695-b1jbpbp06sqhp7uouge84g84l8fmr817.apps.googleusercontent.com';
+    const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
+
     let tokenClient;
 
 
@@ -130,7 +132,6 @@
           callback: '', // defined later
         });
         gisInited = true;
-        maybeEnableButtons();
     }
 
     async function updateDepreciationRate() {
@@ -139,10 +140,10 @@
         // This is a placeholder for the API request to update the value
         // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
         console.log(`Updating Depreciation Rate to: ${depreciationRate}`);
-        
+
         // Example structure for the update request
         // You need OAuth2 authentication to perform this operation.
-  
+
         await gapi.client.sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
           range: '=Parameter!B5',
@@ -160,8 +161,6 @@
           if (resp.error !== undefined) {
             throw (resp);
           }
-          document.getElementById('signout_button').style.visibility = 'visible';
-          document.getElementById('authorize_button').innerText = 'Refresh';
         };
 
         if (gapi.client.getToken() === null) {
