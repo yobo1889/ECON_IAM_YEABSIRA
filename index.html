@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Integrated Assessment Model</title>
+  <meta charset="utf-8" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #data-table {
+      width: 70%;
+      border-collapse: collapse;
+      margin-right: 20px;
+    }
+
+    #parameter-inputs {
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+    }
+
+    #parameter-inputs input {
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+
+    #reconfigure-button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #data-table th, #data-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    #data-table th {
+      background-color: #f2f2f2;
+      color: #333;
+    }
+
+    #data-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Integrated-Assessment-Model</h1>
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>CO2 Concentration(PPM)</th>
+          <th>Temperature(*C)</th>
+          <th>Per Capita Consumption(USD)</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Data rows will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+  <div id="parameter-inputs">
+    <h2>Parameters</h2>
+    <!-- Repeat this input structure for the number of parameters you have -->
+    <input type="text" id="depreciation-rate" placeholder="Depreciation Rate">
+    <input type="text" placeholder="Parameter 2">
+    <input type="text" placeholder="Parameter 3">
+    <input type="text" placeholder="Parameter 4">
+    <input type="text" placeholder="Parameter 5">
+    <input type="text" placeholder="Parameter 6">
+    <input type="text" placeholder="Parameter 7">
+    <input type="text" placeholder="Parameter 8">
+    <input type="text" placeholder="Parameter 9">
+    <input type="text" placeholder="Parameter 10">
+    <button id="reconfigure-button" onclick="updateDepreciationRate()">Reconfigure</button>
+    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+
+  </div>
+
+  <script type="text/javascript">
+    const API_KEY = 'AIzaSyCV5ia_3Wy_Ab4IpoB3rb4kSkfdW3_msxQ';
+    const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+    const SPREADSHEET_ID = '1d8zUH-JMpL3NZ4QUswsM9fNKd8h8Pzt7-QNbv3WtUpc';
+    const RANGES = ['Output!B2:B282', 'Output!C2:C282', 'Output!D2:D282'];
+    const CLIENT_ID = '226866111695-b1jbpbp06sqhp7uouge84g84l8fmr817.apps.googleusercontent.com';
+    let tokenClient;
+
+
+    function gapiLoaded() {
+      gapi.load('client', initializeGapiClient);
+    }
+
+    async function initializeGapiClient() {
+      try {
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: [DISCOVERY_DOC],
+        });
+        listValues();
+      } catch (error) {
+        console.error("Error initializing the Google API client:", error);
+      }
+    }
+    function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+    }
+
+    async function updateDepreciationRate() {
+      const depreciationRate = document.getElementById('depreciation-rate').value;
+      try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
+        console.log(`Updating Depreciation Rate to: ${depreciationRate}`);
+        
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+  
+        await gapi.client.sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: '=Parameter!B5',
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values: [[depreciationRate]]
+          }
+        });
+      } catch (err) {
+        console.error("Error updating depreciation rate:", err);
+      }
+    }
+    function handleAuthClick() {
+        tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) {
+            throw (resp);
+          }
+          document.getElementById('signout_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').innerText = 'Refresh';
+        };
+
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick() {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken('');
+          document.getElementById('content').innerText = '';
+          document.getElementById('authorize_button').innerText = 'Authorize';
+          document.getElementById('signout_button').style.visibility = 'hidden';
+        }
+      }
+
+
+    async function listValues() {
+      let tableBody = document.getElementById('table-body');
+      try {
+        let dataRows = [];
+        for (let i = 0; i < 281; i++) { // Adjust 281 to match the number of years or rows
+          dataRows.push([2020 + i]); // Initialize rows with the year
+        }
+
+        for (let range of RANGES) {
+          let response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: SPREADSHEET_ID,
+            range: range,
+          });
+          let values = response.result.values;
+          if (!values || values.length === 0) {
+            console.log('No values found for range:', range);
+            continue;
+          }
+
+          // Fill the dataRows with values from the sheet
+          values.forEach((value, index) => {
+            if (dataRows[index]) {
+              dataRows[index].push(value[0] || '');
+            }
+          });
+        }
+
+        // Generate the table rows
+        dataRows.forEach(row => {
+          let tr = document.createElement('tr');
+          row.forEach(cell => {
+            let td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          tableBody.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    }
+  </script>
+  <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+  <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+</body>
+</html>
