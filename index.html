@@ -95,7 +95,7 @@
     <input type="text" id="capital-share" placeholder="Capital Share">
     <input type="text" id="beta" placeholder="Beta">
     <input type="text" id="savings-rate" placeholder="Savings Rate">
-    <button id="reconfigure-button" onclick="updateDepreciationRate()">Reconfigure</button>
+    <button id="reconfigure-button" onclick="reconfigure()">Reconfigure</button>
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
 
   </div>
@@ -135,6 +135,21 @@
         gisInited = true;
     }
 
+    async function reconfigure(){
+      if(document.getElementById('depreciation-rate').value!=""){
+        updateDepreciationRate();
+      }
+      if(document.getElementById('savings-rate').value!=""){
+        updateSavingsRate();
+      }
+      if(document.getElementById('beta').value!=""){
+        updateBeta();
+      }
+      if(document.getElementById('capital-share').value!=""){
+        updateCapitalShare();
+      }
+    }
+
     async function updateDepreciationRate() {
       const depreciationRate = document.getElementById('depreciation-rate').value;
       try {
@@ -156,6 +171,75 @@
            listValues();
       } catch (err) {
         console.error("Error updating depreciation rate:", err);
+      }
+    }
+    async function updateSavingsRate() {
+      const savingsRate = document.getElementById('savings-rate').value;
+      try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
+        console.log(`Updating Savings Rate to: ${savingsRate}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
+        await gapi.client.sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Parameter!B6',
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values: [[savingsRate]]
+          }
+        });
+           listValues();
+      } catch (err) {
+        console.error("Error updating savings rate:", err);
+      }
+    }
+    async function updateCapitalShare() {
+      const capitalShare = document.getElementById('capital-share').value;
+      try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
+        console.log(`Updating Capital Share to: ${capitalShare}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
+        await gapi.client.sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Parameter!B4',
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values: [[capitalShare]]
+          }
+        });
+           listValues();
+      } catch (err) {
+        console.error("Error updating capital share:", err);
+      }
+    }
+    async function updateBeta() {
+      const beta = document.getElementById('beta').value;
+      try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
+        console.log(`Updating Beta to: ${beta}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
+        await gapi.client.sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Parameter!B9',
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values: [[beta]]
+          }
+        });
+           listValues();
+      } catch (err) {
+        console.error("Error updating beta:", err);
       }
     }
     function handleAuthClick() {
