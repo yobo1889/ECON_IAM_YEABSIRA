@@ -46,6 +46,14 @@
       cursor: pointer;
       margin-top: 20px;
     }
+    #authorize_button {
+      padding: 10px;
+      background-color: #AD0000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
 
     #data-table th, #data-table td {
       border: 1px solid #ddd;
@@ -95,7 +103,6 @@
     <input type="text" placeholder="Parameter 10">
     <button id="reconfigure-button" onclick="updateDepreciationRate()">Reconfigure</button>
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
 
   </div>
 
@@ -183,7 +190,6 @@
           gapi.client.setToken('');
           document.getElementById('content').innerText = '';
           document.getElementById('authorize_button').innerText = 'Authorize';
-          document.getElementById('signout_button').style.visibility = 'hidden';
         }
       }
 
