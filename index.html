@@ -271,6 +271,10 @@
 
 
     async function listValues() {
+      document.getElementById('savings-rate').value = "";
+      document.getElementById('beta').value = "";
+      document.getElementById('depreciation-rate').value = "";
+      document.getElementById('capital-gain').value = "";
       let tableBody = document.getElementById('table-body');
       tableBody.textContent = ""
       try {
