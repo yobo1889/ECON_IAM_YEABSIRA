@@ -170,6 +170,12 @@
 
       }, 60000); // 60000 milliseconds = 1 minute
     }
+    function pauseS() {
+    // Display the loading message
+      // Simulate a process thatakes 60 seconds (60000 milliseconds)
+      setTimeout(function() {
+      }, 6000); // 60000 milliseconds = 1 minute
+    }
 
 
     async function initializeGapiClient() {
@@ -215,6 +221,7 @@
       if(document.getElementById('global-ecr').value!=""){
         updateGlobalECR();
       }
+      pau
       listValues();
       pause();
       updatePPCGraph();
