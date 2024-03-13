@@ -135,6 +135,8 @@
 
     let tokenClient;
 
+    const flag = 'T';
+
 
     function gapiLoaded() {
       gapi.load('client', initializeGapiClient);
@@ -160,7 +162,7 @@
       setTimeout(function() {
         // After 60 seconds, hide the loading message and alert the user
         document.getElementById('loadingMessage').style.display = 'none';
-      }, 5000); // 60000 milliseconds = 1 minute
+      }, 10000); // 60000 milliseconds = 1 minute
     }
 
 
@@ -185,6 +187,10 @@
     }
 
     async function reconfigure(){
+      if(flag=='T'){
+        alert("Authorize required");
+        return;
+      }
       if(document.getElementById('depreciation-rate').value!=""){
         updateDepreciationRate();
       }
@@ -300,11 +306,11 @@
             throw (resp);
           }
         };
-
         if (gapi.client.getToken() === null) {
           // Prompt the user to select a Google Account and ask for consent to share their data
           // when establishing a new session.
           tokenClient.requestAccessToken({prompt: 'consent'});
+          flag = 'F';
         } else {
           // Skip display of account chooser and consent dialog for an existing session.
           tokenClient.requestAccessToken({prompt: ''});
