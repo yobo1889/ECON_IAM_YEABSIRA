@@ -104,6 +104,7 @@
     </table>
   </div>
   <div id="graphs">
+    <div id="loadingMessage" style="display: none;">Loading...</div>
     <iframe  width="413" height="255" id="conc-graph" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1679527994&amp;format=interactive"></iframe>
     <iframe  width="413" height="255" id="temp-graph"seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1792339618&amp;format=interactive"></iframe>
     <iframe  width="413" height="255" id="pcc-graph" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1124224748&amp;format=interactive"></iframe>
@@ -151,6 +152,17 @@
       document.getElementById('pcc-graph').src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1124224748&amp;format=interactive";
     }
 
+    function pause() {
+    // Display the loading message
+      document.getElementById('loadingMessage').style.display = 'block';
+
+      // Simulate a process that takes 60 seconds (60000 milliseconds)
+      setTimeout(function() {
+        // After 60 seconds, hide the loading message and alert the user
+        document.getElementById('loadingMessage').style.display = 'none';
+      }, 10000); // 60000 milliseconds = 1 minute
+    }
+
 
     async function initializeGapiClient() {
       try {
@@ -186,6 +198,7 @@
         updateCapitalShare();
       }
       listValues();
+      pause();
       updatePPCGraph();
       updateConcGraph();
       updateTempGraph();
