@@ -139,15 +139,15 @@
       if(document.getElementById('depreciation-rate').value!=""){
         updateDepreciationRate();
       }
-      if(document.getElementById('savings-rate').value!=""){
-        updateSavingsRate();
-      }
-      if(document.getElementById('beta').value!=""){
-        updateBeta();
-      }
-      if(document.getElementById('capital-share').value!=""){
-        updateCapitalShare();
-      }
+      // if(document.getElementById('savings-rate').value!=""){
+      //   updateSavingsRate();
+      // }
+      // if(document.getElementById('beta').value!=""){
+      //   updateBeta();
+      // }
+      // if(document.getElementById('capital-share').value!=""){
+      //   updateCapitalShare();
+      // }
     }
 
     async function updateDepreciationRate() {
@@ -275,7 +275,7 @@
 
     async function listValues() {
       let tableBody = document.getElementById('table-body');
-      tableBody.textContent = "";
+      tableBody.textContent = ""
       try {
         let dataRows = [];
         for (let i = 0; i < 281; i++) { // Adjust 281 to match the number of years or rows
@@ -304,7 +304,6 @@
         // Generate the table rows
         dataRows.forEach(row => {
           let tr = document.createElement('tr');
-          tr.textContent = "";
           row.forEach(cell => {
             let td = document.createElement('td');
             td.textContent = cell;
