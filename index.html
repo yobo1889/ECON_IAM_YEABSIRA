@@ -122,10 +122,8 @@
     <input type="text" id="capital-share" placeholder="Capital Share">
     <input type="text" id="savings-rate" placeholder="Savings Rate">
     <input type="text" id="beta" placeholder="Beta">
-    <input type="text" id="savings-rat" placeholder="Savings Rate">
-    <input type="text" id="depreciation-rat" placeholder="Depreciation Rate">
-    <input type="text" id="capital-she" placeholder="Capital Share">
-    <input type="text" id="be" placeholder="Beta">
+    <input type="text" id="global-ecr" placeholder="Global Emission Control Rate">
+    <input type="text" id="cost-cap" placeholder="Temprature Damage Cap (%)">
     <button id="reconfigure-button" onclick="reconfigure()">Reconfigure</button>
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
 
@@ -210,6 +208,12 @@
       }
       if(document.getElementById('capital-share').value!=""){
         updateCapitalShare();
+      }
+      if(document.getElementById('cost-cap').value!=""){
+        updateCostCap();
+      }
+      if(document.getElementById('global-ecr').value!=""){
+        updateGlobalECR();
       }
       listValues();
       pause();
@@ -307,6 +311,50 @@
         console.error("Error updating beta:", err);
       }
     }
+    async function updateGlobalECR() {
+      const ecr = document.getElementById('global-ecr').value;
+      try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
+        console.log(`Updating Global ECR to: ${ecr}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
+        await gapi.client.sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Parameter!B8',
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values: [[ecr]]
+          }
+        });
+      } catch (err) {
+        console.error("Error updating Global ECR:", err);
+      }
+    }
+    async function updateCostCap() {
+      const cap = document.getElementById('cost-cap').value;
+      try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
+        console.log(`Updating Global ECR to: ${cap}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
+        await gapi.client.sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Parameter!B18',
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values: [[cap]]
+          }
+        });
+      } catch (err) {
+        console.error("Error updating Cost Cap:", err);
+      }
+    }
     function handleAuthClick() {
         tokenClient.callback = async (resp) => {
           if (resp.error !== undefined) {
@@ -340,6 +388,8 @@
 
 
     async function listValues() {
+      document.getElementById('cost-cap').value = "";
+      document.getElementById('global-ecr').value = "";
       document.getElementById('savings-rate').value = "";
       document.getElementById('beta').value = "";
       document.getElementById('depreciation-rate').value = "";
