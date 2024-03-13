@@ -55,6 +55,14 @@
       cursor: pointer;
       margin-top: 20px;
     }
+    #refresh {
+      padding: 10px;
+      background-color: #00AD00;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
 
     #data-table th, #data-table td {
       border: 1px solid #ddd;
@@ -125,6 +133,7 @@
     <input type="text" id="global-ecr" placeholder="Global Emission Control Rate">
     <input type="text" id="cost-cap" placeholder="Temprature Damage Cap (%)">
     <button id="reconfigure-button" onclick="reconfigure()">Reconfigure</button>
+    <button id="refresh" onclick="listValues()">Refresh</button>
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
 
   </div>
