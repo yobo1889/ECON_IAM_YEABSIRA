@@ -275,6 +275,7 @@
 
     async function listValues() {
       let tableBody = document.getElementById('table-body');
+      tableBody.textContent = "";
       try {
         let dataRows = [];
         for (let i = 0; i < 281; i++) { // Adjust 281 to match the number of years or rows
