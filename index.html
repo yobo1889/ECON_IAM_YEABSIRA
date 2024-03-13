@@ -170,7 +170,7 @@
         document.getElementById('graphs').style.display = 'block';
         document.getElementById('loadingMessage').style.display = 'none';
 
-      }, 30000); // 60000 milliseconds = 1 minute
+      }, 60000); // 60000 milliseconds = 1 minute
     }
 
 
@@ -213,6 +213,7 @@
       }
       listValues();
       pause();
+      location.reload();
       updatePPCGraph();
       updateConcGraph();
       updateTempGraph();
