@@ -304,6 +304,7 @@
         // Generate the table rows
         dataRows.forEach(row => {
           let tr = document.createElement('tr');
+          tr.textContent = "";
           row.forEach(cell => {
             let td = document.createElement('td');
             td.textContent = cell;
