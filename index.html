@@ -160,7 +160,7 @@
       setTimeout(function() {
         // After 60 seconds, hide the loading message and alert the user
         document.getElementById('loadingMessage').style.display = 'none';
-      }, 10000); // 60000 milliseconds = 1 minute
+      }, 5000); // 60000 milliseconds = 1 minute
     }
 
 
@@ -199,6 +199,7 @@
       }
       listValues();
       pause();
+      location.reload();
       updatePPCGraph();
       updateConcGraph();
       updateTempGraph();
