@@ -99,6 +99,7 @@
         </tr>
       </thead>
       <tbody id="table-body">
+        <!-- Data rows will be inserted here -->
       </tbody>
     </table>
   </div>
@@ -110,7 +111,7 @@
   </div>
   <div id="parameter-inputs">
     <h2>Parameters</h2>
-
+    <!-- Repeat this input structure for the number of parameters you have -->
     <input type="text" id="depreciation-rate" placeholder="Depreciation Rate">
     <input type="text" id="capital-share" placeholder="Capital Share">
     <input type="text" id="savings-rate" placeholder="Savings Rate">
@@ -141,27 +142,27 @@
       gapi.load('client', initializeGapiClient);
     }
     function updateConcGraph() {
-
+      // Change the URL to the new content you want to load in the iframe
       document.getElementById('conc-graph').src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1679527994&amp;format=interactive";
     }
     function updateTempGraph() {
-      /
+      // Change the URL to the new content you want to load in the iframe
       document.getElementById('temp-graph').src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1792339618&amp;format=interactive";
     }
     function updatePPCGraph() {
-
+      // Change the URL to the new content you want to load in the iframe
       document.getElementById('pcc-graph').src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgSKpSFy-2sBHA5AzLAOsXTJS2kd39sGelpEiKDslcA2VXBkO9JwOxDrDQ7oLoSFefut6uzYyLU7U7/pubchart?oid=1124224748&amp;format=interactive";
     }
 
     function pause() {
-
+    // Display the loading message
       document.getElementById('loadingMessage').style.display = 'block';
 
-
+      // Simulate a process that takes 60 seconds (60000 milliseconds)
       setTimeout(function() {
-
+        // After 60 seconds, hide the loading message and alert the user
         document.getElementById('loadingMessage').style.display = 'none';
-      }, 10000);
+      }, 10000); // 60000 milliseconds = 1 minute
     }
 
 
@@ -214,8 +215,12 @@
     async function updateDepreciationRate() {
       const depreciationRate = document.getElementById('depreciation-rate').value;
       try {
-
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
         console.log(`Updating Depreciation Rate to: ${depreciationRate}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
 
         await gapi.client.sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
@@ -232,8 +237,13 @@
     async function updateSavingsRate() {
       const savingsRate = document.getElementById('savings-rate').value;
       try {
-        /
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
         console.log(`Updating Savings Rate to: ${savingsRate}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
         await gapi.client.sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
           range: 'Parameter!B6',
@@ -249,7 +259,13 @@
     async function updateCapitalShare() {
       const capitalShare = document.getElementById('capital-share').value;
       try {
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
         console.log(`Updating Capital Share to: ${capitalShare}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
         await gapi.client.sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
           range: 'Parameter!B4',
@@ -265,8 +281,13 @@
     async function updateBeta() {
       const beta = document.getElementById('beta').value;
       try {
-
+        // This is a placeholder for the API request to update the value
+        // In a real scenario, you would use gapi.client.sheets.spreadsheets.values.update
         console.log(`Updating Beta to: ${beta}`);
+
+        // Example structure for the update request
+        // You need OAuth2 authentication to perform this operation.
+
         await gapi.client.sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
           range: 'Parameter!B9',
@@ -286,15 +307,20 @@
           }
         };
         if (gapi.client.getToken() === null) {
-
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
           tokenClient.requestAccessToken({prompt: 'consent'});
           flag = 'F';
         } else {
-          flag = 'F';
+          // Skip display of account chooser and consent dialog for an existing session.
           tokenClient.requestAccessToken({prompt: ''});
+          flag = 'F';
         }
       }
 
+      /**
+       *  Sign out the user upon button click.
+       */
       function handleSignoutClick() {
         const token = gapi.client.getToken();
         if (token !== null) {
@@ -315,8 +341,8 @@
       tableBody.textContent = ""
       try {
         let dataRows = [];
-        for (let i = 0; i < 281; i++) {
-          dataRows.push([2020 + i]);
+        for (let i = 0; i < 281; i++) { // Adjust 281 to match the number of years or rows
+          dataRows.push([2020 + i]); // Initialize rows with the year
         }
 
         for (let range of RANGES) {
@@ -330,7 +356,7 @@
             continue;
           }
 
-
+          // Fill the dataRows with values from the sheet
           values.forEach((value, index) => {
             if (dataRows[index]) {
               dataRows[index].push(value[0] || '');
@@ -338,7 +364,7 @@
           });
         }
 
-
+        // Generate the table rows
         dataRows.forEach(row => {
           let tr = document.createElement('tr');
           row.forEach(cell => {
